@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>主要生成AIサービス比較 - ビジネス向け</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+            color: #2c3e50;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 40px;
+            font-size: 2.2em;
+            font-weight: 600;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 15px;
+        }
+        
+        .executive-summary {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .executive-summary h2 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        
+        .executive-summary p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+        
+        .market-share-section {
+            margin: 40px 0;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #3498db;
+        }
+        
+        .section-title {
+            font-size: 1.6em;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+        
+        .chart-container {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .chart-bars {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .bar-item {
+            margin-bottom: 20px;
+        }
+        
+        .bar-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .bar-track {
+            background: #ecf0f1;
+            height: 24px;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .bar-fill {
+            height: 100%;
+            border-radius: 12px;
+            transition: width 1.5s ease-out;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+        
+        .bar-chatgpt { background: linear-gradient(90deg, #3498db, #2980b9); width: 70%; }
+        .bar-gemini { background: linear-gradient(90deg, #e74c3c, #c0392b); width: 15%; }
+        .bar-claude { background: linear-gradient(90deg, #9b59b6, #8e44ad); width: 8%; }
+        .bar-others { background: linear-gradient(90deg, #27ae60, #229954); width: 7%; }
+        
+        .chart-legend {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            margin-right: 12px;
+        }
+        
+        .legend-chatgpt { background: linear-gradient(135deg, #3498db, #2980b9); }
+        .legend-gemini { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+        .legend-claude { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
+        .legend-others { background: linear-gradient(135deg, #27ae60, #229954); }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+        
+        .service-card {
+            background: white;
+            border: 2px solid #ecf0f1;
+            border-radius: 12px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #3498db, #2980b9);
+        }
+        
+        .service-card:nth-child(2)::before { background: linear-gradient(90deg, #e74c3c, #c0392b); }
+        .service-card:nth-child(3)::before { background: linear-gradient(90deg, #9b59b6, #8e44ad); }
+        .service-card:nth-child(4)::before { background: linear-gradient(90deg, #f39c12, #e67e22); }
+        .service-card:nth-child(5)::before { background: linear-gradient(90deg, #27ae60, #229954); }
+        .service-card:nth-child(6)::before { background: linear-gradient(90deg, #16a085, #1abc9c); }
+        .service-card:nth-child(7)::before { background: linear-gradient(90deg, #34495e, #2c3e50); }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            border-color: #3498db;
+        }
+        
+        .service-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        
+        .service-name {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .service-name a {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .service-name a:hover {
+            color: #3498db;
+        }
+        
+        .service-company {
+            font-size: 0.95em;
+            color: #7f8c8d;
+            font-weight: 500;
+        }
+        
+        .market-share-badge {
+            background: #3498db;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        
+        .service-features {
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+        
+        .service-features ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .service-features li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .service-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: bold;
+        }
+        
+        .business-analysis {
+            margin-top: 50px;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            border: 1px solid #ecf0f1;
+        }
+        
+        .business-analysis h2 {
+            color: #2c3e50;
+            font-size: 1.6em;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .analysis-item h3 {
+            color: #34495e;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .analysis-item p {
+            color: #2c3e50;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .analysis-item ul {
+            color: #2c3e50;
+            padding-left: 20px;
+        }
+        
+        .analysis-item li {
+            margin-bottom: 8px;
+        }
+        
+        .analysis-item strong {
+            color: #2980b9;
+            font-weight: 600;
+        }
+        
+        .analysis-item a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .analysis-item a:hover {
+            text-decoration: underline;
+        }
+        
+        .recommendation-box {
+            background: #e8f5e8;
+            border-left: 5px solid #27ae60;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .recommendation-box h3 {
+            color: #27ae60;
+            margin-bottom: 15px;
+        }
+        
+        .footer-note {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ecf0f1;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .chart-container {
+                flex-direction: column;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .service-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>主要生成AIサービス比較分析（2025年7月）</h1>
+        
+        <div class="executive-summary">
+            <h2>エグゼクティブサマリー</h2>
+            <p>生成AI市場はChatGPTが70%のシェアを握る中、各サービスが特化型戦略で差別化を図っています。ビジネス活用では用途に応じた最適なサービス選択が重要です。</p>
+        </div>
+        
+        <div class="market-share-section">
+            <h2 class="section-title">市場シェア分析</h2>
+            <div class="chart-container">
+                <div class="chart-bars">
+                    <div class="bar-item">
+                        <div class="bar-label">
+                            <span>ChatGPT (OpenAI)</span>
+                            <span>70%</span>
+                        </div>
+                        <div class="bar-track">
+                            <div class="bar-fill bar-chatgpt">70%</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bar-item">
+                        <div class="bar-label">
+                            <span>Gemini (Google)</span>
+                            <span>15%</span>
+                        </div>
+                        <div class="bar-track">
+                            <div class="bar-fill bar-gemini">15%</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bar-item">
+                        <div class="bar-label">
+                            <span>Claude (Anthropic)</span>
+                            <span>8%</span>
+                        </div>
+                        <div class="bar-track">
+                            <div class="bar-fill bar-claude">8%</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bar-item">
+                        <div class="bar-label">
+                            <span>その他</span>
+                            <span>7%</span>
+                        </div>
+                        <div class="bar-track">
+                            <div class="bar-fill bar-others">7%</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chart-legend">
+                    <div class="legend-item">
+                        <div class="legend-color legend-chatgpt"></div>
+                        <div>
+                            <strong>ChatGPT</strong><br>
+                            汎用性の高い市場リーダー
+                        </div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color legend-gemini"></div>
+                        <div>
+                            <strong>Gemini</strong><br>
+                            Google統合の強み
+                        </div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color legend-claude"></div>
+                        <div>
+                            <strong>Claude</strong><br>
+                            安全性・分析力重視
+                        </div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color legend-others"></div>
+                        <div>
+                            <strong>その他</strong><br>
+                            特化型サービス群
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-header">
+                    <div>
+                        <div class="service-name"><a href="https://chat.openai.com" target="_blank">ChatGPT</a></div>
+                        <div class="service-company">OpenAI</div>
+                    </div>
+                    <div class="market-share-badge">70%</div>
+                </div>
+                <div class="service-features">
+                    <ul>
+                        <li>最大のユーザーベース（70%シェア）</li>
+                        <li>GPT-4o、GPT-4o miniなど複数モデル</li>
+                        <li>プラグイン・API機能充実</li>
+                        <li>企業向けChatGPT Enterprise</li>
+                        <li>画像生成・分析機能</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-header">
+                    <div>
+                        <div class="service-name"><a href="https://gemini.google.com" target="_blank">Gemini</a></div>
+                        <div class="service-company">Google</div>
+                    </div>
+                    <div class="market-share-badge">15%</div>
+                </div>
+                <div class="service-features">
+                    <ul>
+                        <li>Google Workspace完全統合</li>
+                        <li>リアルタイム検索情報アクセス</li>
+                        <li>Gmail、Google Docs連携</li>
+                        <li>Gemini Pro、Ultraモデル</li>
+                        <li>マルチモーダル対応</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-header">
+                    <div>
+                        <div class="service-name"><a href="https://claude.ai" target="_blank">Claude</a></div>
+                        <div class="service-company">Anthropic</div>
+                    </div>
+                    <div class="market-share-badge">8%</div>
+                </div>
+                <div class="service-features">
+                    <ul>
+                        <li>Constitutional AI（安全性重視）</li>
+                        <li>長文理解・分析に優秀</li>
+                        <li>Claude 4 Opus、Sonnet</li>
+                        <li>論理的思考に強み</li>
+                        <li>研究・専門分野での高評価</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-header">
+                    <div>
+                        <div class="service-name"><a href="https://grok.x.ai" target="_blank">Grok</a></div>
+                        <div class="service-company">xAI</div>
+                    </div>
+                </div>
+                <div class="service-features">
+                    <ul>
+                        <li>X（旧Twitter）完全統合</li>
+                        <li>リアルタイム情報処理</li>
+                        <li>ユニークなパーソナリティ</li>
+                        <li>Grok-2、Grok-3モデル</li>
+                        <li>ソーシャルメディア分析</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-header">
+                    <div>
+                        <div class="service-name"><a href="https://chat.deepseek.com" target="_blank">DeepSeek</a></div>
+                        <div class="service-company">DeepSeek AI</div>
+                    </div>
+                </div>
+                <div class="service-features">
+                    <ul>
+                        <li>数学・科学計算特化</li>
+                        <li>オープンソース志向</li>
+                        <li>研究開発支援機能</li>
+                        <li>技術論文理解</li>
+                        <li>コストパフォーマンス重視</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-header">
+                    <div>
+                        <div class="service-name"><a href="https://www.perplexity.ai" target="_blank">Perplexity</a></div>
+                        <div class="service-company">Perplexity AI</div>
+                    </div>
+                </div>
+                <div class="service-features">
+                    <ul>
+                        <li>検索特化型AI</li>
+                        <li>情報源明示機能</li>
+                        <li>リアルタイム検索</li>
+                        <li>市場調査・競合分析</li>
+                        <li>引用・参考文献管理</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-header">
+                    <div>
+                        <div class="service-name"><a href="https://copilot.microsoft.com" target="_blank">Microsoft Copilot</a></div>
+                        <div class="service-company">Microsoft</div>
+                    </div>
+                </div>
+                <div class="service-features">
+                    <ul>
+                        <li>Microsoft 365完全統合</li>
+                        <li>ビジネス生産性特化</li>
+                        <li>企業セキュリティ対応</li>
+                        <li>Azure OpenAI基盤</li>
+                        <li>Teams、Outlook連携</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="business-analysis">
+            <h2>ビジネス活用における戦略的考察</h2>
+            
+            <div class="analysis-grid">
+                <div class="analysis-item">
+                    <h3>市場リーダーの優位性</h3>
+                    <p><strong><a href="https://chat.openai.com" target="_blank">ChatGPT</a></strong>の70%シェアは、先行者利益と継続的なイノベーションの結果です。企業導入では以下の要因が決定的です：</p>
+                    <ul>
+                        <li>豊富な事例とベストプラクティス</li>
+                        <li>充実したAPI・開発者エコシステム</li>
+                        <li>Enterprise版での企業セキュリティ対応</li>
+                        <li>多様な業界・用途での実績</li>
+                    </ul>
+                </div>
+                
+                <div class="analysis-item">
+                    <h3>エコシステム統合戦略</h3>
+                    <p><strong><a href="https://gemini.google.com" target="_blank">Gemini</a></strong>と<strong><a href="https://copilot.microsoft.com" target="_blank">Microsoft Copilot</a></strong>は、既存のビジネスインフラとの統合で差別化：</p>
+                    <ul>
+                        <li>Google Workspace利用企業にはGemini</li>
+                        <li>Microsoft 365環境にはCopilot</li>
+                        <li>既存ワークフロー内でのシームレス活用</li>
+                        <li>ITコスト・管理負荷の軽減</li>
+                    </ul>
+                </div>
+                
+                <div class="analysis-item">
+                    <h3>特化型戦略の有効性</h3>
+                    <p>特定業務での専門性を重視する企業には、特化型サービスが効果的：</p>
+                    <ul>
+                        <li><strong><a href="https://claude.ai" target="_blank">Claude</a></strong>: 法務・コンプライアンス重視業界</li>
+                        <li><strong><a href="https://www.perplexity.ai" target="_blank">Perplexity</a></strong>: 市場調査・情報収集業務</li>
+                        <li><strong><a href="https://chat.deepseek.com" target="_blank">DeepSeek</a></strong>: R&D・技術開発部門</li>
+                        <li><strong><a href="https://grok.x.ai" target="_blank">Grok</a></strong>: マーケティング・PR部門</li>
+                    </ul>
+                </div>
+                
+                <div class="analysis-item">
+                    <h3>投資対効果の最適化</h3>
+                    <p>企業規模と用途に応じた戦略的な選択が重要：</p>
+                    <ul>
+                        <li>大企業: 複数サービスの併用でリスク分散</li>
+                        <li>中小企業: 主力1サービス+特化型の組み合わせ</li>
+                        <li>スタートアップ: コスト効率重視の選択</li>
+                        <li>業界特化: 規制・セキュリティ要件への対応</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="recommendation-box">
+                <h3>💡 ビジネス導入における推奨戦略</h3>
+                <p>1. <strong>メインストリーム戦略</strong>: ChatGPTを基盤とし、Google Workspace/Microsoft 365環境に応じてGemini/Copilotを併用</p>
+                <p>2. <strong>特化業務対応</strong>: 法務・研究・調査など専門性が求められる業務には対応する特化型サービスを追加</p>
+                <p>3. <strong>段階的導入</strong>: パイロットプロジェクトから開始し、効果測定を経て全社展開へ</p>
+            </div>
+        </div>
+        
+        <div class="footer-note">
+            ※ 市場シェアは2025年4月の調査データに基づく推定値です。実際の導入にあたっては、各企業の要件に応じた詳細な検討が必要です。
+        </div>
+    </div>
+</body>
+</html>
